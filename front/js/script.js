@@ -5,9 +5,9 @@ fetch("http://localhost:3000/api/products")   // requête de l'ensemble des prod
         return res.json();  // récupération de la promesse
     } 
     })
-    .then(function(products) {    // exploitation des données récupérées
-        for (let product of products) {  // chaque donnée des données API est intégré dans sa carte
-            card(product);
+    .then(function(apiDatas) {    // exploitation des données récupérées
+        for (let apiData of apiDatas) {  // chaque donnée des données API est intégré dans sa carte
+            card(apiData);
         }
     }) 
     .catch(function(err) { 
