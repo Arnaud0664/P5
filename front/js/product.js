@@ -3,6 +3,8 @@ urlClickedProduct = window.location.href;   // récupération de l'url du produi
 urlParams = new URL(urlClickedProduct); // analyse des composants de l'url
 productId = urlParams.searchParams.get("id"); // récupération de l'id du produit cliqué
 
+var productImgSrc = 0;
+var productImgAltTxt = 0;
 
 fetch(`http://localhost:3000/api/products/${productId}`)    // requête avec id du produit cliqué, avec une string interpolation
 .then(function(res) { 
@@ -12,9 +14,12 @@ fetch(`http://localhost:3000/api/products/${productId}`)    // requête avec id 
     })
     .then(function(apiDatas) {  // chaque donnée des données API est intégré dans sa fiche produit
         productSheet(apiDatas);
+        productImgSrc = apiDatas.imageUrl;
+        productImgAltTxt = apiDatas.altTxt;
     })
-    
-    function productSheet(asset) {  // création des fiches produits
+
+
+    function productSheet(sofa) {  // création des fiches produits
         let divItemImg = document.getElementsByClassName("item__img");  // création des noeuds texte
         let img = document.createElement("img")
         let h1Title = document.getElementById("title");
@@ -23,21 +28,20 @@ fetch(`http://localhost:3000/api/products/${productId}`)    // requête avec id 
         let selectColors = document.getElementById("colors");
         
         divItemImg[0].appendChild(img);     // ?  tableau de listes de noeuds
-        img.src = asset.imageUrl;           // on relie les propriétés des produits aux noeuds texte
-        img.alt = asset.altTxt;
-        h1Title.textContent = asset.name;
-        spanPrice.textContent = asset.price;
-        pDescription.textContent = asset.description;
-        let colors = asset.colors
+        img.src = sofa.imageUrl;           // on relie les propriétés des produits aux noeuds texte
+        img.alt = sofa.altTxt;
+        h1Title.textContent = sofa.name;
+        spanPrice.textContent = sofa.price;
+        pDescription.textContent = sofa.description;
+        let colors = sofa.colors;
        
         for (let color of colors){      // création des options couleurs, pour chaque couleur :
             option = document.createElement("option");  // création d'une balise option
-            selectColors.appendChild(option)        // placement de la balise option dans la balise select
-            option.textContent = color      // création d'un noeud texte pour chaque couleur
-            option.value = color        // menu déroulant contenant chaque couleur
+            selectColors.appendChild(option);        // placement de la balise option dans la balise select
+            option.textContent = color;      // création d'un noeud texte pour chaque couleur
+            option.value = color;        // menu déroulant contenant chaque couleur
+        }
     }
-    }
-
 
 //----------------------------ajout au panier-----------------------
 
@@ -56,28 +60,12 @@ quantityChoice.addEventListener('input', function () {
     }
     });
 
-var button = document.getElementById("addToCart");  // ajout des options séléctionnées + id produit au panier
+var button = document.getElementById("addToCart");  // ajout options séléctionnées + id produit au panier
 button.addEventListener("click", function(){
     localStorage.id = productId;
     localStorage.quantity = quantityUserChoice;
     localStorage.color = colorUserChoice;
+    localStorage.imgSrc =  productImgSrc; 
+    localStorage.imgAlt =  productImgAltTxt; 
+
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
