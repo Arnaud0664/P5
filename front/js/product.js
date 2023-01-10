@@ -3,21 +3,17 @@ urlClickedProduct = window.location.href;   // récupération de l'url du produi
 urlParams = new URL(urlClickedProduct); // analyse des composants de l'url
 productId = urlParams.searchParams.get("id"); // récupération de l'id du produit cliqué
 
-var productImgSrc = 0;
-var productImgAltTxt = 0;
-
 fetch(`http://localhost:3000/api/products/${productId}`)    // requête avec id du produit cliqué, avec une string interpolation
 .then(function(res) { 
     if (res.ok) { 
         return res.json();  // récupération de la promesse  
     } 
     })
-    .then(function(apiDatas) {  // chaque donnée des données API est intégré dans sa fiche produit
-        productSheet(apiDatas);
-        productImgSrc = apiDatas.imageUrl;
-        productImgAltTxt = apiDatas.altTxt;
-    })
-
+.then(function(apiDatas) {  // chaque donnée des données API est intégré dans sa fiche produit
+    productSheet(apiDatas);
+    productImgSrc = apiDatas.imageUrl;
+    productImgAltTxt = apiDatas.altTxt;
+})
 
     function productSheet(sofa) {  // création des fiches produits
         let divItemImg = document.getElementsByClassName("item__img");  // création des noeuds texte
@@ -65,7 +61,6 @@ button.addEventListener("click", function(){
     localStorage.id = productId;
     localStorage.quantity = quantityUserChoice;
     localStorage.color = colorUserChoice;
-    localStorage.imgSrc =  productImgSrc; 
-    localStorage.imgAlt =  productImgAltTxt; 
-
+    
+    console.log(localStorage)
 });
