@@ -1,6 +1,42 @@
-// récupération informations du panier
 
-var cartArray = [localStorage.id, localStorage.quantity, localStorage.color]
+ let cartLinea = localStorage.getItem("cart"); // récupération du produit
+ var cart =JSON.parse(cartLinea);
+ console.log(cart);
+ /* if(cart == null) {
+    var cart = []
+    cart.push(save.id);
+    cart.push(save.quantity);
+    cart.push(save.color);
+    
+  }else if (save.id == cart.id && save.color == cart.color) {
+    save.quantity ++;
+  }
+  
+ 
+
+
+function addCart(product) { // ajouter le produit au panier
+  let cart = getCart();
+  let foundProduct = cart.find(p => p.id == product.id);
+  if(foundProduct != undefined) {
+    foundProduct.quantity ++;
+  }else {
+  product.quantity = 1;
+  cart.push(product)
+  }
+}
+
+
+
+console.log();*/
+
+
+
+
+
+
+
+/*var cartArray = [localStorage.id, localStorage.quantity, localStorage.color]
 
 for (let i in cartArray) 
   var cartId = cartArray[0];
@@ -36,7 +72,7 @@ fetch(`http://localhost:3000/api/products/${cartId}`)    // requête des informa
           </div>
         </div>
       </article>`
-});
+});*/
 
 
 
