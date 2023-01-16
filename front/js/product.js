@@ -1,4 +1,3 @@
-
 urlClickedProduct = window.location.href;   // récupération de l'url du produit cliqué
 urlParams = new URL(urlClickedProduct); // analyse des composants de l'url
 productId = urlParams.searchParams.get("id"); // récupération de l'id du produit cliqué
@@ -41,93 +40,47 @@ function productSheet(sofa) {  // création des fiches produits
 
 
 //----------------------création panier---------------------------
-
 var button = document.getElementById("addToCart");  
-if (button !== null) {
-    button.addEventListener("click", function(){    // sur écoute du bouton...
-        var productColor = document.querySelector('select').value; // récupération choix couleur utilisateur 
-        var productQuantity = document.querySelector("input").value;   // récupération choix quantité utilisateur
-        
-        if ((productQuantity > 100) || (productQuantity <1) || (!productColor)){ // valeurs obligatoires pour les choix utilisateurs
-            alert("valeur incorrecte") 
-        }else {
-            var cart = []; // création du panier
-            if (localStorage.getItem("cart")!== null){  // permet d'incrémenter le localStorage ???
-                cart = JSON.parse(localStorage.getItem("cart"));
-            } 
-            
-            let productOptions = { // création d'un objet avec les choix utlisateur
-                id : productId,
-                color : productColor,
-                quantity : productQuantity,
-            }
-            
-            let existingProduct = cart.find(productInCart => productInCart.id == productOptions.id && productInCart.color == productOptions.color);
-            if (typeof existingProduct !== "undefined") {
-                existingProduct.quantity = Number(existingProduct.quantity) + Number(productOptions.quantity);
-                let updatedCart = cart.filter(productInCart => productInCart.id != productOptions.id && productInCart.color != productOptions.color);
-                updatedCart.push(existingProduct);
-                cart = updatedCart;
-                console.log(updatedCart);
-            } else {
-                cart.push(productOptions);
-            }
-            
-            localStorage.setItem("cart",JSON.stringify(cart));
-            
-            
-            
-            
-            
-            
-            
-            // l'objet est placé dans le panier, le panier est stocké dans le localStorage
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            /*let obj = arr.find((o, i) => {
-                if (o.name === 'string 1') {
-                    arr[i] = { name: 'new string', value: 'this', other: 'that' };
-                    return true; // stop searching
-                }*/
-                
-                
-                
-                
-            }})   
+    button.addEventListener("click", function(){
+
+    // initialisation du panier s'il est vide
+let cart = JSON.parse(localStorage.getItem("cart")) ? JSON.parse(localStorage.getItem("cart")) : [];
+
+// récupération choix utilisateur 
+let productColor = document.querySelector('select').value; 
+let productQuantity = document.querySelector("input").value; 
+
+if ((productQuantity > 100) || (productQuantity <1) || (!productColor)){ // valeurs obligatoires pour les choix utilisateurs
+    alert("valeur incorrecte") 
+}
+
+let productOptions = { // création d'un objet avec les choix utlisateur
+    id : productId,
+    color : productColor,
+    quantity : productQuantity,
+}
+    
+if(cart.length > 0){
+    let found = false;
+    
+    for (const element of cart) {  // recherche de doublons dans le panier 
+        if(productOptions._id === element._id && productOptions.color === element.color){
+            element.quantity = Number(element.quantity) + Number(productOptions.quantity); 
+            found = true;  
+            break;
         }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+    }
+    
+    if(found === false){ // pas de doublons = ajouter l'objet produit au panier
+        cart.push(productOptions);
+    }
+    
+    localStorage.removeItem("cart");
+    localStorage.setItem("cart",JSON.stringify(cart));
+    
+}else { // sinon, ajouter uniquement la quantité
+    cart.push(productOptions);
+    localStorage.setItem("cart",JSON.stringify(cart)); 
+}
+
+});

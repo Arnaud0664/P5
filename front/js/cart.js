@@ -1,8 +1,7 @@
 
- let cartLinea = localStorage.getItem("cart"); // récupération du produit
- var cart =JSON.parse(cartLinea);
- console.log(cart);
- /* if(cart == null) {
+ var getCart =JSON.parse(localStorage.getItem("cart")); // récupération du produit
+ console.log(getCart);
+  /*if(cart == null) {
     var cart = []
     cart.push(save.id);
     cart.push(save.quantity);
@@ -12,28 +11,6 @@
     save.quantity ++;
   }
   
- 
-
-
-function addCart(product) { // ajouter le produit au panier
-  let cart = getCart();
-  let foundProduct = cart.find(p => p.id == product.id);
-  if(foundProduct != undefined) {
-    foundProduct.quantity ++;
-  }else {
-  product.quantity = 1;
-  cart.push(product)
-  }
-}
-
-
-
-console.log();*/
-
-
-
-
-
 
 
 /*var cartArray = [localStorage.id, localStorage.quantity, localStorage.color]
