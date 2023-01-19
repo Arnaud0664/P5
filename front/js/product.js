@@ -16,7 +16,7 @@ fetch(`http://localhost:3000/api/products/${productId}`)    // requête avec id 
 
 function productSheet(sofa) {  // création des fiches produits
     let divItemImg = document.getElementsByClassName("item__img");  // création des noeuds texte
-    let img = document.createElement("img")
+    let img = document.createElement("img");
     let h1Title = document.getElementById("title");
     let spanPrice = document.getElementById("price");
     let pDescription = document.getElementById("description");
@@ -40,47 +40,46 @@ function productSheet(sofa) {  // création des fiches produits
 
 
 //----------------------création panier---------------------------
-var button = document.getElementById("addToCart");  
-    button.addEventListener("click", function(){
 
-    // initialisation du panier s'il est vide
-let cart = JSON.parse(localStorage.getItem("cart")) ? JSON.parse(localStorage.getItem("cart")) : [];
+let button = document.getElementById("addToCart");  
+button.addEventListener("click", function() { // écoute du bouton "ajouter au panier"
+ 
+    let cart = JSON.parse(localStorage.getItem("cart")) ? JSON.parse(localStorage.getItem("cart")) : []; // initialisation du panier s'il est vide
 
-// récupération choix utilisateur 
-let productColor = document.querySelector('select').value; 
-let productQuantity = document.querySelector("input").value; 
+    let productColor = document.querySelector('select').value; // récupération choix utilisateur 
+    let productQuantity = document.querySelector("input").value; 
 
-if ((productQuantity > 100) || (productQuantity <1) || (!productColor)){ // valeurs obligatoires pour les choix utilisateurs
-    alert("valeur incorrecte") 
-}
+    if ((productQuantity > 100) || (productQuantity <1) || (!productColor)){ // valeurs obligatoires pour les choix utilisateurs
+        alert("valeur incorrecte") 
+    }
 
-let productOptions = { // création d'un objet avec les choix utlisateur
-    id : productId,
-    color : productColor,
-    quantity : productQuantity,
-}
-    
-if(cart.length > 0){
-    let found = false;
-    
-    for (const element of cart) {  // recherche de doublons dans le panier 
-        if(productOptions._id === element._id && productOptions.color === element.color){
-            element.quantity = Number(element.quantity) + Number(productOptions.quantity); 
-            found = true;  
-            break;
+    let productOptions = { // création d'un objet produit avec les choix utlisateur
+        id : productId,
+        color : productColor,
+        quantity : productQuantity,
+    }
+        
+    if(cart.length > 0){
+        let found = false;
+        
+        for (const element of cart) {  // recherche de doublons dans le panier 
+            if(productOptions._id === element._id && productOptions.color === element.color){
+                element.quantity = Number(element.quantity) + Number(productOptions.quantity); 
+                found = true;  
+                break;
+            }
         }
-    }
-    
-    if(found === false){ // pas de doublons = ajouter l'objet produit au panier
+        
+        if(found === false){ // pas de doublons = ajouter l'objet produit au panier, sinon ajouter uniquement la quantité
+            cart.push(productOptions);
+        }
+        
+        localStorage.removeItem("cart");
+        localStorage.setItem("cart",JSON.stringify(cart));
+        
+    }else { 
         cart.push(productOptions);
+        localStorage.setItem("cart",JSON.stringify(cart)); 
     }
-    
-    localStorage.removeItem("cart");
-    localStorage.setItem("cart",JSON.stringify(cart));
-    
-}else { // sinon, ajouter uniquement la quantité
-    cart.push(productOptions);
-    localStorage.setItem("cart",JSON.stringify(cart)); 
-}
 
 });
