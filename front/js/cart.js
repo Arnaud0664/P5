@@ -1,13 +1,23 @@
+function getCart() { // fonction de récupération du panier
+    return localStorage.getItem("cart");
+}
+
+function saveCart(cart) { // fonction d'envoi sur le localStorage
+    return localStorage.setItem("cart", JSON.stringify(cart));
+}
+
+
+
 
 //---------------------affichage du panier--------------------------
 
 
-const getCart = JSON.parse(localStorage.getItem("cart")); // récupération du panier
+const objectCart = JSON.parse(getCart());
 
-for (let element in getCart) {  // tri des données du panier 
-let cartId = getCart[element].id;
-let cartQuantity = getCart[element].quantity;
-let cartColor = getCart[element].color;
+for (let element in objectCart) {  // tri des données du panier 
+let cartId = objectCart[element].id;
+let cartQuantity = objectCart[element].quantity;
+let cartColor = objectCart[element].color;
 
     const itemSection = document.getElementById ("cart__items");    // création des éléments d'affichage du DOM
     const article = document.createElement("article"); 
@@ -83,50 +93,43 @@ let cartColor = getCart[element].color;
 
 
 
-
 //-------------modification de la quantité panier-------------------
 
 
-/*function ModifyQuantity() {
-    const itemQuantity = document.getElementsByClassName("itemQuantity");
-    for (let item of itemQuantity) {
-        input.addEventListener("change", function (ModifyQuantityInput) {}); // écoute de l'input quantité
-    } 
-}    
 
+function ModifyQuantity() {
+    const itemQuantityList = document.getElementsByClassName("itemQuantity");
+    console.log(itemQuantityList);
+    for (let item of itemQuantityList) {
+        item.addEventListener("change", function (event) { 
+            console.log("changement !");
+            
+            let itemId = event.target.closest("article").getAttribute("data-id");
+            let itemColor = event.target.closest("article").getAttribute("data-color");
+            let itemQuantity = this.value;
+            //let itemQuantity = event.target.closest("itemQuantity").getAttribute("value");
+            console.log(itemId);
+            console.log(itemColor);
+            console.log(itemQuantity);
+            
+            let objectCart = JSON.parse(getCart());
+            console.log(objectCart);
+            let ProductToModify = objectCart.filter(element => element.id == itemId && element.color == itemColor); 
+            console.log(ProductToModify);
 
+            
+            
+            
 
-function ModifyQuantityInput(event) {
-    
-    let quantityInput = event.target;
-    const product = quantityInput.closest("article");
-    
-    let inputId = product.dataset.id; // récupération valeur id de l'input 
-    let inputColor = product.dataset.color; // récupération valeur color de l'input
-    let cartValues = getCart;
-    console.log(cartValues);
-    let updatedCart = cartValues.filter(function(product) {
-        return inputId != cartValues.id || inputColor != cartValues.color;
-    });
-    localStorage.setItem("basket", JSON.stringify(updatedBasket));
-    
-    
-    /*let updatedCart = cartValues.filter(function() { // recherche du produit modifié, d'abord par id
-    return inputId === cartValues.id;
-    });
-
-    let ModifiedProduct = idSearch.find(function() { // ensuite par couleur 
-    return inputColor === idSearch.color;
-    });
-
-    if (newQuantity > 0) {
-    ModifiedProduct.quantity = newQuantity; // modification de la quantité
-    localStorage.setItem("cart", JSON.stringify(cartValues));
-    
-    }  
-    localStorage.setItem("cart", JSON.stringify(cartValues));
-
-}*/
+            /*if (newQuantity > 0) {
+            ModifiedProduct.quantity = newQuantity; // modification de la quantité
+            localStorage.setItem("cart", JSON.stringify(cartValues));
+            
+            } */ 
+            
+        });
+    }
+}
   
 
 
@@ -161,42 +164,55 @@ function totalPrice() {
     };
 };
 
+*/
 
 
 
 
 
-
-
-
-
-
-function deleteProducts() {
+function deleteProduct() {
     const deleteButtonList = document.getElementsByClassName("deleteItem");
     console.log(deleteButtonList);
     for (let button of deleteButtonList) {
-        button.addEventListener('click', deleteOneProduct)
+        button.addEventListener('click', function(event) {
+            console.log("bouton cliqué");
+            let inputId = event.target.closest("article").getAttribute("data-id");
+            let inputColor = event.target.closest("article").getAttribute("data-color");
+            
+            let objectCart = JSON.parse(getCart());
+            let updatedCart = objectCart.filter(element => element.id != inputId || element.color != inputColor); 
+            
+            return localStorage.setItem("cart", JSON.stringify(updatedCart));   
+        });       
+    }    
+}            
+       
+        
+        
+        
+        
+        
+        
+        
+        
+       
+        /*
+        let updatedCart = cartValues.filter(function() {
+            inputId != cartValues.id && inputColor != cartValues.color;
+            saveCart(updatedCart);
+        });*/
+        
+    
+
+
+/*function test(){
+    return (typeof(verif) == "function") ? alert("mafonction existe") : alert("mafonction n\’existe pas");
     }
-}
-
-
-
-function deleteOneProduct(event) {
-    const deleteButton = event.target;
-    let inputId = deleteButton.closest("article").getAttribute("data-id")
-    let inputColor = deleteButton.closest("article").getAttribute("data-color")
-    let cartValues = JSON.parse(localStorage.getItem("cart"));
-    console.log(cartValues);
-    let updatedCart = cartValues.filter(function() {
-        return inputId != cartValues.id && inputColor != cartValues.color;
-    });
-    localStorage.setItem("cart", JSON.stringify(updatedBasket));
-}
-
-deleteProducts();*/
-
-
-
+    test();
+    /*<
+    function mafonction() {}
+    */
+  
 
 
 
