@@ -93,23 +93,22 @@ let cartColor = objectCart[element].color;
 
 
 
-//-------------modification de la quantité panier-------------------
+//-------------modification quantité panier-------------------
 
 
 
 function ModifyQuantity() {
-    const itemQuantityList = document.getElementsByClassName("itemQuantity");
-    console.log(itemQuantityList);
+    const itemQuantityList = document.getElementsByClassName("itemQuantity");   
     for (let item of itemQuantityList) {
-        item.addEventListener("change", function (event) { 
+        item.addEventListener("change", function (event) {  // évènement sur l'élément de modification
             
-            let itemId = event.target.closest("article").getAttribute("data-id");
+            let itemId = event.target.closest("article").getAttribute("data-id"); 
             let itemColor = event.target.closest("article").getAttribute("data-color");
             
-            let objectCart = JSON.parse(getCart());
-
+            let objectCart = JSON.parse(getCart());         // identification du produit concerné
             let ProductToModify = objectCart.filter(element => element.id == itemId && element.color == itemColor); 
-            ProductToModify[0].quantity = this.value;
+            
+            ProductToModify[0].quantity = this.value;       // la valeur de l'écoute remplace l'ancienne quantité
             
             saveCart(objectCart);  
         });
@@ -117,45 +116,58 @@ function ModifyQuantity() {
 }
   
 
+//-----------------suppression produit panier------------------------
+
 
 function deleteProduct() {
     const deleteButtonList = document.getElementsByClassName("deleteItem");
-    console.log(deleteButtonList);
-    for (let button of deleteButtonList) {
-        button.addEventListener('click', function(event) {
+    for (let button of deleteButtonList) {  //
+        button.addEventListener('click', function(event) {  // évènement sur l'élément de suppression
             
             let inputId = event.target.closest("article").getAttribute("data-id");
             let inputColor = event.target.closest("article").getAttribute("data-color");
             
-            let objectCart = JSON.parse(getCart());
+            let objectCart = JSON.parse(getCart());         // identification du produit concerné
             let updatedCart = objectCart.filter(element => element.id != inputId || element.color != inputColor); 
             
             let inputToDelete = document.querySelector(`article[data-id="${inputId}"][data-color="${inputColor}"]`);       
-            inputToDelete.remove();
+            inputToDelete.remove();                         // suppression du produit concerné
             
-            saveCart(updatedCart);
+            saveCart(updatedCart);                          // sauvegarde du panier sans le produit
         });       
     }    
 }  
 
 
+function totalQuantity() {
 
-/*function totalQuantity() {
-  let cartValues = Cart();
-  let spanTotalQuantity = document.getElementById("#totalQuantity");
-  let quantityArray = [];
-  if (cartValues === null) {
-    return emptyCartMessage();
-  } else {
-    let total;
-    for (let element=0; element.quantity<cartValues.length; element.quantity++)
-      total = total + element.quantity;
-      quantityArray.push(parseInt(total)); 
-      spanTotalQuantity.textContent = total; //valeur initiale à 0 pour eviter erreur quand panier vide
-    };
-};
+    let objectCart = JSON.parse(getCart());
+    
+    let cartQuantities = [];
+    for (let element in objectCart) {  
+        cartQuantities.push(Number(objectCart[element].quantity));  
+    }
+    
+    let totalCartQuantities = cartQuantities.reduce(function(accu, valeur) {
+        return accu + valeur;
+    })
+    
+    let spanTotalQuantity = document.querySelector("#totalQuantity");
+    spanTotalQuantity.textContent = totalCartQuantities;
+}
 
-function totalPrice() {
+
+
+
+
+
+
+
+
+
+
+
+/*function totalPrice() {
   let cartValues = Cart();
   let spanTotalPrice = document.getElementById("#totalQuantity");
   let priceArray = [];
