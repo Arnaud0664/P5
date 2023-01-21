@@ -102,35 +102,41 @@ function ModifyQuantity() {
     console.log(itemQuantityList);
     for (let item of itemQuantityList) {
         item.addEventListener("change", function (event) { 
-            console.log("changement !");
             
             let itemId = event.target.closest("article").getAttribute("data-id");
             let itemColor = event.target.closest("article").getAttribute("data-color");
-            let itemQuantity = this.value;
-            //let itemQuantity = event.target.closest("itemQuantity").getAttribute("value");
-            console.log(itemId);
-            console.log(itemColor);
-            console.log(itemQuantity);
             
             let objectCart = JSON.parse(getCart());
-            console.log(objectCart);
+
             let ProductToModify = objectCart.filter(element => element.id == itemId && element.color == itemColor); 
-            console.log(ProductToModify);
-
+            ProductToModify[0].quantity = this.value;
             
-            
-            
-
-            /*if (newQuantity > 0) {
-            ModifiedProduct.quantity = newQuantity; // modification de la quantité
-            localStorage.setItem("cart", JSON.stringify(cartValues));
-            
-            } */ 
-            
+            saveCart(objectCart);  
         });
     }
 }
   
+
+
+function deleteProduct() {
+    const deleteButtonList = document.getElementsByClassName("deleteItem");
+    console.log(deleteButtonList);
+    for (let button of deleteButtonList) {
+        button.addEventListener('click', function(event) {
+            
+            let inputId = event.target.closest("article").getAttribute("data-id");
+            let inputColor = event.target.closest("article").getAttribute("data-color");
+            
+            let objectCart = JSON.parse(getCart());
+            let updatedCart = objectCart.filter(element => element.id != inputId || element.color != inputColor); 
+            
+            let inputToDelete = document.querySelector(`article[data-id="${inputId}"][data-color="${inputColor}"]`);       
+            inputToDelete.remove();
+            
+            saveCart(updatedCart);
+        });       
+    }    
+}  
 
 
 
@@ -170,43 +176,19 @@ function totalPrice() {
 
 
 
-function deleteProduct() {
-    const deleteButtonList = document.getElementsByClassName("deleteItem");
-    console.log(deleteButtonList);
-    for (let button of deleteButtonList) {
-        button.addEventListener('click', function(event) {
-            console.log("bouton cliqué");
-            let inputId = event.target.closest("article").getAttribute("data-id");
-            let inputColor = event.target.closest("article").getAttribute("data-color");
-            
-            let objectCart = JSON.parse(getCart());
-            let updatedCart = objectCart.filter(element => element.id != inputId || element.color != inputColor); 
-            
-            return localStorage.setItem("cart", JSON.stringify(updatedCart));   
-        });       
-    }    
-}            
-       
-        
-        
-        
-        
-        
-        
-        
-        
-       
-        /*
-        let updatedCart = cartValues.filter(function() {
-            inputId != cartValues.id && inputColor != cartValues.color;
-            saveCart(updatedCart);
-        });*/
-        
-    
 
+       
+        
+        
+        
+        
+        
+        
+        
+        
 
 /*function test(){
-    return (typeof(verif) == "function") ? alert("mafonction existe") : alert("mafonction n\’existe pas");
+    return (typeof(deleteProduct) == "function") ? alert("ma fonction existe") : alert("ma fonction n\’existe pas");
     }
     test();
     /*<
