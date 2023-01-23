@@ -47,7 +47,8 @@ button.addEventListener("click", function() { // écoute du bouton "ajouter au p
     let cart = JSON.parse(localStorage.getItem("cart")) ? JSON.parse(localStorage.getItem("cart")) : []; // initialisation du panier s'il est vide
 
     let productColor = document.querySelector('select').value; // récupération choix utilisateur 
-    let productQuantity = document.querySelector("input").value; 
+    let productQuantity = document.querySelector("input").value;
+    
 
     if ((productQuantity > 100) || (productQuantity <1) || (!productColor)){ // valeurs obligatoires pour les choix utilisateurs
         alert("valeur incorrecte") 
@@ -77,9 +78,9 @@ button.addEventListener("click", function() { // écoute du bouton "ajouter au p
         localStorage.removeItem("cart");
         localStorage.setItem("cart",JSON.stringify(cart));
         
-    }else { 
-        cart.push(productOptions);
-        localStorage.setItem("cart",JSON.stringify(cart)); 
-    }
-
+        }else { 
+            cart.push(productOptions); 
+            localStorage.setItem("cart",JSON.stringify(cart)); 
+        }
+        
 });
