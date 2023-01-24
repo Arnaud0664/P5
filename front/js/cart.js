@@ -1,3 +1,7 @@
+
+//-------------------fonctionnalités récurrentes----------------
+
+
 function getCart() { // fonction de récupération du panier
     return localStorage.getItem("cart");
 }
@@ -13,12 +17,12 @@ function saveCart(cart) { // fonction d'envoi sur le localStorage
 const objectCart = JSON.parse(getCart());
 
 if (objectCart <= 0) {
-    let spanTotalQuantity = document.getElementById("totalQuantity").textContent = "0"; // affichage des totaux quand le panier est vide
+    let spanTotalQuantity = document.getElementById("totalQuantity").textContent = "0"; // affichage panier vide
     let spanTotalPrice = document.getElementById("totalPrice").textContent = "0";
 }
 
-for (let element in objectCart) {  // tri des données du panier 
-let cartId = objectCart[element].id;
+for (let element in objectCart) {  
+let cartId = objectCart[element].id;                    // tri des données du panier 
 let cartQuantity = objectCart[element].quantity;
 let cartColor = objectCart[element].color;
 
@@ -51,10 +55,8 @@ let cartColor = objectCart[element].color;
             } 
             })
         .then(function(apiDatas) {  // informations manquantes intégrées au DOM
-
         img.src = apiDatas.imageUrl;
         h2.innerText = apiDatas.name;
-       
         pPrice.innerText = apiDatas.price;
         divCartImg.classList.add("cart__item__img");
         img.setAttribute("alt", apiDatas.altTxt); 
@@ -72,7 +74,7 @@ let cartColor = objectCart[element].color;
         pDelete.classList.add("deleteItem");
         pDelete.innerText = "Supprimer"; 
 
-        itemSection.appendChild(article);
+        itemSection.appendChild(article);       
         article.appendChild(divCartImg);
         divCartImg.appendChild(img);
         article.appendChild(divCartContent);
@@ -87,11 +89,11 @@ let cartColor = objectCart[element].color;
         divCartSetting.appendChild(divCartDelete);
         divCartDelete.appendChild(pDelete);
 
-        objectCart[element].price = apiDatas.price; // ajoute le prix au panier
+        objectCart[element].price = apiDatas.price; // ajoute les prix des produits au panier
         
-        saveCart(objectCart);
+        saveCart(objectCart);  
         ModifyQuantity();
-        deleteProduct();
+        deleteProduct();        // principales fonctionnalités rattachées à la page
         totalQuantity();
         totalPrice();
     });
@@ -99,16 +101,16 @@ let cartColor = objectCart[element].color;
 
 
 
-//-------------modification quantité panier-------------------
 
+//-------------modification quantité panier-------------------
 
 
 function ModifyQuantity() {
     const itemQuantityList = document.getElementsByClassName("itemQuantity");   
     for (let item of itemQuantityList) {
-        item.addEventListener("change", function (event) {  // évènement sur l'élément de modification
+        item.addEventListener("change", function (event) {  // évènement sur l'input de modification
             
-            let itemId = event.target.closest("article").getAttribute("data-id"); 
+            let itemId = event.target.closest("article").getAttribute("data-id");   // récupération des identifiants du produits
             let itemColor = event.target.closest("article").getAttribute("data-color");
             
             let objectCart = JSON.parse(getCart());         // identification du produit concerné
@@ -116,9 +118,8 @@ function ModifyQuantity() {
             
             ProductToModify[0].quantity = this.value;       // la valeur de l'écoute remplace l'ancienne quantité
             
-            saveCart(objectCart); 
-            
-            totalQuantity(objectCart);
+            saveCart(objectCart);           
+            totalQuantity(objectCart);      // sauvegarde du panier, mise à jour du DOM
             totalPrice(objectCart);
         });
     }
@@ -131,7 +132,7 @@ function ModifyQuantity() {
 function deleteProduct() {
     const deleteButtonList = document.getElementsByClassName("deleteItem");
     for (let button of deleteButtonList) {  //
-        button.addEventListener('click', function(event) {  // évènement sur l'élément de suppression
+        button.addEventListener('click', function(event) {  // évènement sur le bouton de suppression
             
             let inputId = event.target.closest("article").getAttribute("data-id");
             let inputColor = event.target.closest("article").getAttribute("data-color");
@@ -147,16 +148,18 @@ function deleteProduct() {
                 inputToDelete.remove();                     // sinon, suppression du produit concerné
             }
 
-            saveCart(updatedCart);                          // sauvegarde du panier sans le produit
-            totalQuantity(updatedCart);                     // mise à jour des quantités
+            saveCart(updatedCart);                          
+            totalQuantity(updatedCart);                     // sauvegarde du panier, mise à jour du DOM           
             totalPrice(updatedCart);
         });       
     }    
 }  
 
 
-function totalQuantity() {
+//-----------------calcul de la quantité total du panier------------------
 
+
+function totalQuantity() {
     let objectCart = JSON.parse(getCart());
     
     let cartQuantities = [];        
@@ -175,7 +178,7 @@ function totalQuantity() {
         })
     }
     
-    let spanTotalQuantity = document.querySelector("#totalQuantity");
+    let spanTotalQuantity = document.querySelector("#totalQuantity");  // affichage du total dans le DOM
     if (objectCart.length <= 0) {
         spanTotalQuantity.textContent = "0";
     } else {
@@ -184,29 +187,31 @@ function totalQuantity() {
 }
 
 
+//-------------------calcul du prix total du panier----------------------
+
+
 function totalPrice() {
-    
-    deleteProduct();
+    deleteProduct();        // mise à jour des produits supprimés 
 
     let objectCart = JSON.parse(getCart());
     
     let eachProductTotalPrice = [];
 
-    for (let element in objectCart) {
+    for (let element in objectCart) {         // calcul du prix total de chaque produit du panier
         let eachProductPrice = Number(objectCart[element].price);
         let eachProductQuantity = Number(objectCart[element].quantity); 
         eachProductTotalPrice.push(eachProductPrice*eachProductQuantity); 
     }
 
-    if (eachProductTotalPrice.length <= 0) {   
-        ;
-    } else {
+    if (eachProductTotalPrice.length <= 0) {    
+        ;       
+    } else {                                  // addition de tous les prix 
         totalCartPrice = eachProductTotalPrice.reduce(function(accu, valeur) { 
             return accu + valeur;
         })
     }
     
-    let spanTotalPrice = document.querySelector("#totalPrice");
+    let spanTotalPrice = document.querySelector("#totalPrice");     // affichage du total dans le DOM
     
     if (objectCart.length <= 0) {
         spanTotalPrice.textContent = "0";
