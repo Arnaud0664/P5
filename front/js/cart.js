@@ -57,7 +57,7 @@ let cartColor = objectCart[element].color;
         .then(function(apiDatas) {  // informations manquantes intégrées au DOM
         img.src = apiDatas.imageUrl;
         h2.innerText = apiDatas.name;
-        pPrice.innerText = apiDatas.price;
+        pPrice.innerText = apiDatas.price + "€";
         divCartImg.classList.add("cart__item__img");
         img.setAttribute("alt", apiDatas.altTxt); 
 
@@ -187,7 +187,7 @@ function totalQuantity() {
 }
 
 
-//-------------------calcul du prix total du panier----------------------
+//-------------------calcul prix total du panier----------------------
 
 
 function totalPrice() {
@@ -221,18 +221,126 @@ function totalPrice() {
 }
 
 
+
+
+//-----------------------vérification formulaire----------------------------   
     
+
+// fonctions pour chaque champs de formulaire
+
+
+function checkFirstName(value) {
+    let firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
+
+    if (!value.match(/^{2,25}$/) && value.length >= 0) {
+        firstNameErrorMsg.textContent = "Champs de 2 à 25 caractères.";
+        firstNameValidity = false;
     
+    } else if (!value.match(/^[a-zA-Z-]$/)) {
+        firstNameErrorMsg.textContent = "Champs ne contenant que des lettres et des tirets.";
+        firstNameValidity = false;
     
+    } else {
+        firstNameErrorMsg.textContent = "";
+        firstName = value;
+        firstNameValidity = true;
+    };
+};
 
+function checkLastName(value) {
+    let lastNameErrorMsg = document.getElementById("lastNameErrorMsg");
 
-
-
-
-
-
-      
+    if (!value.match(/^{2,25}$/) && value.length >= 0) {
+        lastNameErrorMsg.textContent = "Champs de 2 à 25 caractères.";
+        lastNameValidity = false;
     
+    } else if (!value.match(/^[a-zA-Z-]$/)) {
+        lastNameErrorMsg.textContent = "Champs ne contenant que des lettres et des tirets.";
+        lastNameValidity = false;
+    
+    } else {
+        lastNameErrorMsg.textContent = "";
+        lastName = value;
+        lastNameValidity = true;
+    };
+};
+
+function checkAdress(value) {
+    let adressErrorMsg = document.getElementById("adressErrorMsg");
+
+    if (!value.match(/^{5,100}$/) && value.length >= 0) {
+        adressErrorMsg.textContent = "Champs de 5 à 50 caractères.";
+        adressValidity = false;
+    
+    } else if (!value.match(/^[0-9a-zA-Z-]$/)) {
+        adressErrorMsg.textContent = "Champs ne contenant que des lettres, des chiffres et des tirets.";
+        adressValidity = false;
+    
+    } else {
+        adressErrorMsg.textContent = "";
+        adress = value;
+        adressValidity = true;
+    };
+};
+
+function checkCity(value) {
+    let cityErrorMsg = document.getElementById("cityErrorMsg");
+
+    if (!value.match(/^{5,100}$/) && value.length >= 0) {
+        cityErrorMsg.textContent = "Champs de 2 à 25 caractères.";
+        cityValidity = false;
+    
+    } else if (!value.match(/^[a-zA-Z-]$/)) {
+        cityErrorMsg.textContent = "Champs ne contenant que des lettres et des tirets.";
+        cityErrorMsg = false;
+    
+    } else {
+        cityErrorMsg.textContent = "";
+        city = value;
+        cityErrorMsg = true;
+    };
+};
+
+function CheckEmail(value) {
+    let emailErrorMsg = document.getElementById("emailErrorMsg");
+
+    if (!value.match(/^[a-z0-9\_-]+[a-z0-9\.\_-]*@[a-z0-9\_-]{2,}\.[a-z\.\_-]+[a-z\_-]+$/) && value.length >= 0) {
+        emailErrorMsg.textContent = "Email invalide.";
+        EmailValidity = false;
+    } else {
+        emailErrorMsg.textContent = "";
+        email = value;
+        EmailValidity = true;
+    };
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     
