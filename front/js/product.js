@@ -42,7 +42,7 @@ function productSheet(sofa) {  // création des fiches produits
 //----------------------création panier---------------------------
 
 let button = document.getElementById("addToCart");  
-button.addEventListener("click", function() { // écoute du bouton "ajouter au panier"
+button.addEventListener("click", function(event) { // écoute du bouton "ajouter au panier"
  
     let cart = JSON.parse(localStorage.getItem("cart")) ? JSON.parse(localStorage.getItem("cart")) : []; // initialisation du panier s'il est vide
 
@@ -51,7 +51,8 @@ button.addEventListener("click", function() { // écoute du bouton "ajouter au p
     
 
     if ((productQuantity > 100) || (productQuantity <1) || (!productColor)){ // valeurs obligatoires pour les choix utilisateurs
-        alert("valeur incorrecte") 
+        alert("valeur incorrecte");
+        return;
     }
 
     let productOptions = { // création d'un objet produit avec les choix utlisateur
